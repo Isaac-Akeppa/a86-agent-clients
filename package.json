@@ -1,0 +1,39 @@
+{
+  "name": "agente-mps",
+  "version": "1.0.0",
+  "description": "Agente de IA para Marcial Protege",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "start": "tsx src/main.ts",
+    "tunnel": "npx localtunnel --port 3000"
+  },
+  "dependencies": {
+    "@langchain/community": "*",
+    "@langchain/langgraph": "*",
+    "@langchain/langgraph-checkpoint-sqlite": "^1.0.4",
+    "@langchain/openai": "*",
+    "better-sqlite3": "^12.11.1",
+    "dotenv": "*",
+    "express": "*",
+    "googleapis": "*",
+    "langchain": "*",
+    "multer": "^2.2.0",
+    "mysql2": "*",
+    "nodemailer": "*",
+    "openai": "*",
+    "pdf-parse": "*",
+    "xlsx": "*",
+    "zod": "*"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/express": "*",
+    "@types/multer": "^2.2.0",
+    "@types/node": "*",
+    "@types/nodemailer": "*",
+    "@types/pdf-parse": "*",
+    "tsx": "*",
+    "typescript": "*"
+  }
+}
