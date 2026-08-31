@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { processMessage } from '../ai/agent.js'
-import { popPdfUrl } from '../ai/session-state.js'
+import { popPdfUrl, getClassification } from '../ai/session-state.js'
 
 const router = Router()
 
@@ -46,6 +46,10 @@ router.post('/chat', async (req, res) => {
       success: true,
       message: cleanMessage,
       attachmentUrls: fileUrls,
+      // Categoría ("administrativo" | "operativo" | "siniestros") para que n8n la use
+      // como etiqueta de la conversación en Chatwoot. null hasta que el modelo la
+      // determine (ver "clasificarConversacion"); se mantiene entre turnos.
+      classification: getClassification(String(sessionId)) ?? null,
     });
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : 'Error desconocido'

@@ -7,6 +7,7 @@ import { ChatOpenAI } from '@langchain/openai'
 import { trimMessages, type BaseMessage } from '@langchain/core/messages'
 import { getSystemPrompt } from './system-prompt.js'
 import { verificarNumeroSerie } from './tools/verificar-serie.js'
+import { clasificarConversacion } from './tools/clasificar-conversacion.js'
 
 // El historial de conversación de LangGraph vivía solo en RAM (MemorySaver) — se perdía
 // en cada reinicio/crash del proceso. Se respalda en su propio archivo SQLite, separado
@@ -69,7 +70,7 @@ async function limitarHistorialParaLLM(state: { messages: BaseMessage[] }) {
 }
 
 function buildAgent() {
-  const tools = [verificarNumeroSerie]
+  const tools = [verificarNumeroSerie, clasificarConversacion]
   return createReactAgent({
     llm: model,
     tools,
