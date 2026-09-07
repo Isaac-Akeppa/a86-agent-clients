@@ -1,7 +1,7 @@
 {
   "name": "agente-a86",
   "version": "1.0.0",
-  "description": "Agente de IA para Agente 86 (seguros de auto)",
+  "description": "Agente de IA A86 para Aseguro (seguros de auto)",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/main.ts",

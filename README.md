@@ -1,6 +1,6 @@
-# Agente 86 — bot "Max"
+# Aseguro — bot "A86"
 
-Asistente virtual de Agente 86 (seguros de auto). Valida al cliente por el número de
+Asistente virtual de Aseguro (seguros de auto). Valida al cliente por el número de
 serie (VIN) de su vehículo contra una API externa, responde dudas sobre su póliza con
 los datos reales que esa API devuelve, puede enviarle el PDF de su póliza, y clasifica
 la conversación en Chatwoot cuando algo requiere seguimiento humano.
@@ -27,7 +27,9 @@ la conversación en Chatwoot cuando algo requiere seguimiento humano.
    contra una API externa, antes de ayudar con cualquier otra cosa.
 2. **Responde preguntas sobre la póliza** (vigencia, coberturas, primas, recibos
    pendientes, datos del vehículo, etc.) usando únicamente los datos reales que esa
-   API devuelve — nunca inventa ni completa información.
+   API devuelve — nunca inventa ni completa información, ni busca en otras fuentes.
+   Si la pregunta se sale del alcance de su póliza de auto con Aseguro, lo dice con
+   calidez y no intenta responderla.
 3. **Envía el PDF de la póliza** cuando el cliente lo pide explícitamente y el
    documento está disponible.
 4. **Clasifica la conversación** en una de tres categorías (`administrativo`,
@@ -88,7 +90,7 @@ para seguimiento a casos ya abiertos). En vez de eso responde de inmediato con e
 teléfono para reportarlo, incluso antes de validar el VIN.
 
 Cuando el bot clasifica `operativo` o `administrativo`, su respuesta visible se limita
-a reconocer la solicitud y decir que el equipo de Agente 86 le dará seguimiento — no
+a reconocer la solicitud y decir que el equipo de Aseguro le dará seguimiento — no
 inventa plazos, pasos ni teléfonos, porque todavía no conoce el procedimiento real
 para esos trámites.
 
@@ -178,8 +180,7 @@ SQLite en `data/` (gitignored):
 
 El flujo de n8n (`A86Chatwoot.json` en la raíz del repo) es una adaptación del workflow
 heredado de un bot anterior (Marcial Protege) — ya se limpió para que coincida con este
-backend, pero el **Chatwoot del usuario todavía no está configurado**, así que faltan
-credenciales/URLs reales antes de poder correrlo.
+backend
 
 **Qué se mantuvo tal cual**: el pipeline de debounce/dedup de mensajes de WhatsApp
 (espera 10s, relee el historial, descarta ejecuciones duplicadas), el procesamiento de
@@ -205,20 +206,10 @@ de rutas que ya no existen):
 audio/PDFs ahora se agrega directamente al `customerMessage`, etiquetado por tipo (ej.
 `[Imagen adjunta]: sedán plata con abolladura en puerta...`).
 
-**Pendiente para el usuario, antes de poder usar este flujo**:
-- La URL de `EnvioAAgente` sigue apuntando al dominio viejo de MPS
-  (`https://mps-agent-clients.akeppatest.com/ai/chat`) — hay que cambiarla por el
-  deployment real de Agente 86.
-- El nodo `Datos` y todas las llamadas a la API de Chatwoot (`chat.akeppatest.com` +
-  token) son credenciales de prueba del bot anterior — hay que reemplazarlas por las del
-  Chatwoot real de Agente 86 una vez esté configurado.
-- El endpoint `POST /ai/chat` solo necesita `sessionId`, `customerMessage` y `timestamp`
-  — `attachmentUrls` en la respuesta trae URLs listas para reenviar como adjunto (ej. el
-  PDF de la póliza), de un solo uso, no se deben cachear ni reutilizar.
 
 ## Placeholders pendientes
 
-- **Nombre del bot**: "Max" es un placeholder, se puede cambiar en
+- **Nombre del bot**: "A86" (el asistente) y "Aseguro" (la empresa) se pueden cambiar en
   [system-prompt.ts](src/ai/system-prompt.ts).
 - **Teléfono de reporte de siniestros nuevos**: `55-1234-5678` es un placeholder al
   inicio de [system-prompt.ts](src/ai/system-prompt.ts) (`TELEFONO_REPORTE_SINIESTROS`)
@@ -232,7 +223,7 @@ audio/PDFs ahora se agrega directamente al `customerMessage`, etiquetado por tip
 
 Este proyecto partió de un bot de otra aseguradora (Marcial Protege / GNP) mucho más
 grande, con trámites, checklist de documentos y recepción de archivos del cliente. Se
-eliminó todo lo que no aplica a Agente 86:
+eliminó todo lo que no aplica a Aseguro:
 - Catálogo de trámites, clasificación de trámites, checklist de requisitos por trámite.
 - Recepción/almacenamiento de archivos que envía el cliente (el bot actual es
   *send-only*: puede mandar el PDF de la póliza, pero no procesa ni guarda adjuntos

@@ -60,7 +60,16 @@ async function consultarSerieIntento(numeroSerie: string): Promise<CarVerifyResu
   }
 }
 
-// Reintenta una sola vez ante error de red, timeout o falla del servidor.
+const REINTENTO_DELAY_MS = 1_000
+
+function esperar(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+// Reintenta una sola vez ante error de red, timeout o falla del servidor. Espera un poco
+// antes del segundo intento porque el fallo típico es un DNS lookup que falla de forma
+// transitoria (ENOTFOUND intermitente) — reintentar de inmediato suele pegarle al mismo
+// bache en vez de darle tiempo a recuperarse.
 export async function consultarSerieConReintento(numeroSerie: string): Promise<CarVerifyResultado> {
   const maxIntentos = 2
 
@@ -72,6 +81,7 @@ export async function consultarSerieConReintento(numeroSerie: string): Promise<C
       if (intento === maxIntentos) {
         return { status: 'error' }
       }
+      await esperar(REINTENTO_DELAY_MS)
     }
   }
 

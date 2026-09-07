@@ -11,5 +11,5 @@ app.use(express.json())
 app.use('/ai', aiRoutes)
 
 app.listen(PORT, () => {
-  console.log(` Servidor de Agente 86 corriendo en el puerto ${PORT}`)
+  console.log(` Servidor de Aseguro corriendo en el puerto ${PORT}`)
 })

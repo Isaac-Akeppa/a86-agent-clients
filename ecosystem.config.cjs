@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'mps-agent-clients',
+      name: 'aseguro-agent-clients',
       script: 'node_modules/.bin/tsx',
       args: 'src/main.ts',
       cwd: __dirname,
@@ -13,6 +13,7 @@ module.exports = {
       max_memory_restart: '512M',
       env: {
         NODE_ENV: 'production',
+        PORT: 3010,
       },
       out_file: './logs/out.log',
       error_file: './logs/error.log',
